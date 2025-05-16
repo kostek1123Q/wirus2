@@ -21,7 +21,7 @@ To jest strona internetowa inspirowana ptoszek.pl, która nie pozwala łatwo wyj
 
 - `index.html` — struktura i styl strony
 - `script.js` — logika i efekty działania
-- `favicon1.ico`, `favicon2.ico`, `favicon3.ico` — favicony do zmiany (dodaj własne)
+- `favicon1.ico`, `favicon2.ico`, `favicon3.ico` — favicony do zmiany
 - Pliki dźwiękowe `.mp3` — podmień na swoje lub użyj tych z repo
 
 ---
