@@ -33,11 +33,11 @@ const titles = [
 // --- Linki do otwierania ---
 const links = [
   "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://youtu.be/Wocq0AQr_hE",
   "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://youtu.be/Wocq0AQr_hE",
   "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://www.google.com/search?q=czy+antek+jest+grozny"
+  "https://youtu.be/Wocq0AQr_hE"
 ];
 
 // --- Obrazki losowe ---
