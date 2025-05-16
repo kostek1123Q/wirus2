@@ -5,8 +5,8 @@ const message = document.getElementById('message');
 const sound = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
   new Audio('illegal-polish-content.mp3'),
-  new Audio('')
-  ];
+  new Audio('polish-toilet-refrain.mp3')
+];
 
 button.addEventListener('click', () => {
   // Odtwórz dźwięk
