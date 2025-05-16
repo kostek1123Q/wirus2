@@ -28,10 +28,11 @@ const titles = [
 
 // --- Linki do otwierania ---
 const links = [
-  "https://ptoszek.pl/",
-  "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  "https://pl.wikipedia.org/wiki/Paranoja",
-  "https://niebezpiecznik.pl/",
+  "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://www.google.com/search?q=czy+antek+jest+grozny",
+  "https://www.google.com/search?q=czy+antek+jest+grozny",
   "https://www.google.com/search?q=czy+antek+jest+grozny"
 ];
 
