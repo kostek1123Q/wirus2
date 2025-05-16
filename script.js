@@ -22,6 +22,15 @@ const titles = [
   "💀💀💀"
 ];
 
+// Linki do otwierania w nowych kartach
+const links = [
+  "https://ptoszek.pl/",
+  "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "https://pl.wikipedia.org/wiki/Paranoja",
+  "https://niebezpiecznik.pl/",
+  "https://www.google.com/search?q=czy+antek+jest+grozny"
+];
+
 let titleShuffleStarted = false;
 
 function startTitleShuffle() {
@@ -29,6 +38,13 @@ function startTitleShuffle() {
     const newTitle = titles[Math.floor(Math.random() * titles.length)];
     document.title = newTitle;
   }, 1500);
+}
+
+function openMultipleLinks(count = 4) {
+  for (let i = 0; i < count; i++) {
+    const randomUrl = links[Math.floor(Math.random() * links.length)];
+    window.open(randomUrl, "_blank");
+  }
 }
 
 button.addEventListener('click', () => {
@@ -74,23 +90,14 @@ button.addEventListener('click', () => {
     }
   }, 1500);
 
-  // Start tytułowego chaosu
+  // Start losowego zmieniania tytułu
   if (!titleShuffleStarted) {
     startTitleShuffle();
     titleShuffleStarted = true;
   }
+
+  // Co 5 sekund otwieraj 4 linki w nowych kartach
+  setInterval(() => {
+    openMultipleLinks(4);
+  }, 5000);
 });
-
-const links = [
-  "https://ptoszek.pl/",
-  "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  "https://pl.wikipedia.org/wiki/Paranoja",
-  "https://niebezpiecznik.pl/",
-  "https://www.google.com/search?q=czy+antek+jest+grozny"
-];
-
-function openRandomLink() {
-  const randomUrl = links[Math.floor(Math.random() * links.length)];
-  window.open(randomUrl, "_blank");
-}
-
