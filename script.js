@@ -9,7 +9,11 @@ const faviconEl = document.getElementById('favicon');
 const sounds = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
   new Audio('illegal-polish-content.mp3'),
-  new Audio('polish-toilet-refrain.mp3')
+  new Audio('polish-toilet-refrain.mp3'),
+  new Audio('szatanie-moja-dupa (1).mp3'),
+  new Audio('zamknij-pizde-bo-cie-podpale.mp3'),
+  new Audio('metal-pipe-clang.mp3'),
+  new Audio('rmf-fm-muzyczka-intro.mp3')
 ];
 
 // --- Tytuły ---
