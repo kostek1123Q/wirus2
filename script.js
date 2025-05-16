@@ -2,7 +2,10 @@ const button = document.getElementById('crazyButton');
 const message = document.getElementById('message');
 
 // Dźwięk
-const sound = new Audio('stracilas-cnote_R1qiG8j.mp3');
+const sound = [
+  new Audio('stracilas-cnote_R1qiG8j.mp3'),
+  new Audio(''),
+  ];
 
 button.addEventListener('click', () => {
   // Odtwórz dźwięk
