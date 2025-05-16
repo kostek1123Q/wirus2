@@ -1,16 +1,41 @@
 const button = document.getElementById('crazyButton');
 const message = document.getElementById('message');
 
-// Dźwięk
-const sound = [
+// Lista dźwięków
+const sounds = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
   new Audio('illegal-polish-content.mp3'),
   new Audio('polish-toilet-refrain.mp3')
 ];
 
+// Losowe tytuły zakładki
+const titles = [
+  "Antek patrzy...",
+  "To nie żart.",
+  "Jeszcze tu jesteś?",
+  "Uciekaj!",
+  "Klikniesz znowu?",
+  "404: Bez powrotu",
+  "Nie ma odwrotu",
+  "Antek w twoim systemie",
+  "👁️",
+  "💀💀💀"
+];
+
+let titleShuffleStarted = false;
+
+function startTitleShuffle() {
+  setInterval(() => {
+    const newTitle = titles[Math.floor(Math.random() * titles.length)];
+    document.title = newTitle;
+  }, 1500);
+}
+
 button.addEventListener('click', () => {
-  // Odtwórz dźwięk
-  sound.play();
+  // Odtwarzanie losowego dźwięku
+  const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+  randomSound.currentTime = 0;
+  randomSound.play();
 
   // Losowa wiadomość
   const texts = [
@@ -29,6 +54,12 @@ button.addEventListener('click', () => {
     document.body.style.backgroundColor = '#000';
   }, 300);
 
+  // Efekt drgania ekranu
+  document.body.classList.add('shake');
+  setTimeout(() => {
+    document.body.classList.remove('shake');
+  }, 400);
+
   // Popupy
   setTimeout(() => {
     alert("Hej! To nie był najlepszy pomysł.");
@@ -42,4 +73,10 @@ button.addEventListener('click', () => {
       alert("Antek się zawiódł...");
     }
   }, 1500);
+
+  // Start tytułowego chaosu
+  if (!titleShuffleStarted) {
+    startTitleShuffle();
+    titleShuffleStarted = true;
+  }
 });
