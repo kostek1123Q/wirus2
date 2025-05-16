@@ -1,0 +1,29 @@
+body {
+  background-color: #000;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  padding: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #0f0;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #fff;
+  color: #f00;
+}
+
+#message {
+  margin-top: 30px;
+  font-size: 24px;
+  color: red;
+}
