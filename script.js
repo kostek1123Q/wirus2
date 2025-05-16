@@ -4,7 +4,8 @@ const message = document.getElementById('message');
 // Dźwięk
 const sound = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
-  new Audio(''),
+  new Audio('illegal-polish-content.mp3'),
+  new Audio('')
   ];
 
 button.addEventListener('click', () => {
