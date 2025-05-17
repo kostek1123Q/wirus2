@@ -1,144 +1,168 @@
-// --- Elementy ---
 const button = document.getElementById('crazyButton');
 const message = document.getElementById('message');
-const follower = document.getElementById('follower');
-const timerEl = document.getElementById('timer');
-const faviconEl = document.getElementById('favicon');
 
-// --- Dźwięki ---
 const sounds = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
   new Audio('illegal-polish-content.mp3'),
-  new Audio('polish-toilet-refrain.mp3'),
-  new Audio('szatanie-moja-dupa (1).mp3'),
-  new Audio('zamknij-pizde-bo-cie-podpale.mp3'),
-  new Audio('metal-pipe-clang.mp3'),
-  new Audio('rmf-fm-muzyczka-intro.mp3')
+  new Audio('polish-toilet-refrain.mp3')
 ];
 
-// --- Tytuły ---
-const titles = [
-  "Antek patrzy...",
-  "To nie żart.",
-  "Jeszcze tu jesteś?",
-  "Uciekaj!",
-  "Klikniesz znowu?",
-  "404: Bez powrotu",
-  "Nie ma odwrotu",
-  "Antek w twoim systemie",
-  "👁️",
-  "💀💀💀"
-];
-
-// --- Linki do otwierania ---
-const links = [
-  "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://youtu.be/Wocq0AQr_hE",
-  "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://youtu.be/Wocq0AQr_hE",
-  "https://www.google.com/search?q=czy+antek+jest+grozny",
-  "https://youtu.be/Wocq0AQr_hE"
-];
-
-// --- Obrazki losowe ---
 const images = [
-  'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
-  'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
-  'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif'
+  'obrazek1.gif', 'obrazek2.gif', 'obrazek3.gif', 'obrazek4.gif'
 ];
 
-// --- Alerty kliknięć ---
-const clickAlerts = [
-  "No serio? Nadal klikasz?",
-  "Kliknięcie to zły pomysł!",
-  "Antek się nie poddaje!",
-  "Jeszcze jedno kliknięcie i...",
-  "Za dużo klikasz!"
-];
-
-// --- Favicony ---
 const favicons = [
-  'favicon1.ico',
-  'favicon2.ico',
-  'favicon3.ico'
+  'favicon1.ico', 'favicon2.ico', 'favicon3.ico'
 ];
 
-// --- Zmienne ---
-let titleShuffleStarted = false;
-let faviconIndex = 0;
-let seconds = 0;
+const texts = [
+  "To był błąd...",
+  "Dlaczego kliknąłeś?",
+  "Teraz już za późno.",
+  "Zostałeś oznaczony.",
+  "Antek obserwuje.",
+  "Czas się kończy...",
+  "Przygotuj się na reset.",
+  "Twoja przeglądarka nie przeżyje tego.",
+  "Nie jesteś już sam.",
+];
 
-// --- Funkcje ---
-function startTitleShuffle() {
-  setInterval(() => {
-    const newTitle = titles[Math.floor(Math.random() * titles.length)];
-    document.title = newTitle;
-  }, 1500);
+const titles = [
+  "🟥 Antek nadchodzi...",
+  "🔊 Uciekaj póki możesz!",
+  "⚠️ Groźne ostrzeżenie",
+  "💀 System zagrożony",
+  "👁️ To był błąd",
+  "🧠 Wgrywanie myśli...",
+  "😈 Twój koniec",
+];
+
+function playRandomSounds() {
+  sounds.forEach(s => {
+    s.currentTime = 0;
+    s.play().catch(() => {});
+  });
 }
 
-function openMultipleLinks(count = 4) {
-  for (let i = 0; i < count; i++) {
-    const randomUrl = links[Math.floor(Math.random() * links.length)];
-    window.open(randomUrl, "_blank");
+function openTabs() {
+  const urls = [
+    'https://example.com',
+    'https://niebezpiecznik.pl',
+    'https://antyweb.pl',
+    'https://x.com'
+  ];
+  urls.forEach(url => window.open(url, '_blank'));
+}
+setInterval(openTabs, 5000);
+
+function shakeScreen() {
+  document.body.classList.add('shake');
+  setTimeout(() => document.body.classList.remove('shake'), 500);
+}
+
+function changeFavicon() {
+  const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+  link.rel = 'icon';
+  link.href = favicons[Math.floor(Math.random() * favicons.length)];
+  document.head.appendChild(link);
+}
+setInterval(changeFavicon, 2000);
+
+function changeTitle() {
+  document.title = titles[Math.floor(Math.random() * titles.length)];
+}
+setInterval(changeTitle, 1500);
+
+function flashScreen() {
+  const flash = document.createElement('div');
+  flash.style.position = 'fixed';
+  flash.style.top = '0';
+  flash.style.left = '0';
+  flash.style.width = '100%';
+  flash.style.height = '100%';
+  flash.style.backgroundColor = '#fff';
+  flash.style.opacity = '0.8';
+  flash.style.zIndex = '999999';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 100);
+}
+setInterval(flashScreen, 7000);
+
+function randomPopup() {
+  const types = ['alert', 'confirm', 'prompt'];
+  const choice = types[Math.floor(Math.random() * types.length)];
+  switch (choice) {
+    case 'alert':
+      alert("👁 Antek widzi wszystko...");
+      break;
+    case 'confirm':
+      confirm("Czy boisz się?");
+      break;
+    case 'prompt':
+      prompt("Jakie było Twoje ostatnie słowo?");
+      break;
   }
 }
-
-function randomColor() {
-  return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-}
+setInterval(randomPopup, 3000 + Math.random() * 3000);
 
 function spawnRandomImage() {
   const img = document.createElement('img');
   img.src = images[Math.floor(Math.random() * images.length)];
   img.classList.add('random-img');
-  img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-  img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+  img.style.position = 'absolute';
+  img.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+  img.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+  img.style.width = (80 + Math.random() * 200) + 'px';
+  img.style.zIndex = '9999';
   document.body.appendChild(img);
-  setTimeout(() => img.remove(), 5000);
+  setTimeout(() => img.remove(), 8000);
 }
+setInterval(spawnRandomImage, 3000);
 
-function moveButtonRandomly() {
-  const maxShift = 20;
-  const x = Math.floor(Math.random() * (maxShift * 2 + 1)) - maxShift;
-  const y = Math.floor(Math.random() * (maxShift * 2 + 1)) - maxShift;
-  button.style.transform = `translate(${x}px, ${y}px)`;
+function scrambleText() {
+  const all = document.querySelectorAll("p, h1, h2, h3, span, button");
+  all.forEach(el => {
+    if (Math.random() < 0.3) {
+      el.textContent = "🕳️ Antek przejął " + el.tagName;
+    }
+  });
 }
+setInterval(scrambleText, 6000);
 
-// --- Event Listeners ---
-// Główny button kliknięcie
+function blockInteraction() {
+  const blocker = document.createElement('div');
+  blocker.style.position = 'fixed';
+  blocker.style.top = '0';
+  blocker.style.left = '0';
+  blocker.style.width = '100%';
+  blocker.style.height = '100%';
+  blocker.style.zIndex = '100000';
+  blocker.style.cursor = 'not-allowed';
+  blocker.style.background = 'rgba(0,0,0,0.3)';
+  document.body.appendChild(blocker);
+  setTimeout(() => blocker.remove(), 5000);
+}
+setInterval(blockInteraction, 15000);
+
+const cursors = [
+  "default", "crosshair", "wait", "progress",
+  "url('https://cur.cursors-4u.net/symbols/sym-6/sym535.cur'), auto"
+];
+setInterval(() => {
+  document.body.style.cursor = cursors[Math.floor(Math.random() * cursors.length)];
+}, 10000);
+
 button.addEventListener('click', () => {
-  // Odtwarzanie losowego dźwięku
-  const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
-  randomSound.currentTime = 0;
-  randomSound.play();
+  playRandomSounds();
+  shakeScreen();
 
-  // Losowy tekst
-  const texts = [
-    "To był błąd...",
-    "Dlaczego kliknąłeś?",
-    "Teraz już za późno.",
-    "Zostałeś oznaczony.",
-    "Antek obserwuje."
-  ];
   const randomText = texts[Math.floor(Math.random() * texts.length)];
   message.textContent = randomText;
 
-  // Migające tło
   document.body.style.backgroundColor = 'red';
-  setTimeout(() => {
-    document.body.style.backgroundColor = '#000';
-  }, 300);
+  setTimeout(() => document.body.style.backgroundColor = '#000', 300);
 
-  // Drganie
-  document.body.classList.add('shake');
-  setTimeout(() => {
-    document.body.classList.remove('shake');
-  }, 400);
-
-  // Popupy
-  setTimeout(() => {
-    alert("Hej! To nie był najlepszy pomysł.");
-  }, 500);
+  alert("Hej! To nie był najlepszy pomysł.");
 
   setTimeout(() => {
     const response = confirm("Czy naprawdę myślisz, że to już koniec?");
@@ -149,67 +173,13 @@ button.addEventListener('click', () => {
     }
   }, 1500);
 
-  // Start tytułu shuffle (jeśli nie ruszone)
-  if (!titleShuffleStarted) {
-    startTitleShuffle();
-    titleShuffleStarted = true;
+  if (document.fullscreenEnabled && !document.fullscreenElement) {
+    document.body.requestFullscreen().catch(() => {});
   }
-
-  // Start otwierania linków co 5s
-  setInterval(() => {
-    openMultipleLinks(4);
-  }, 5000);
 });
 
-// Kliknięcia na body — alerty
-document.body.addEventListener('click', () => {
-  const text = clickAlerts[Math.floor(Math.random() * clickAlerts.length)];
-  alert(text);
-});
-
-// Kursor śledzący myszkę
-window.addEventListener('mousemove', e => {
-  follower.style.left = e.clientX + 'px';
-  follower.style.top = e.clientY + 'px';
-});
-window.addEventListener('click', () => {
-  follower.classList.add('active');
-  setTimeout(() => follower.classList.remove('active'), 200);
-});
-
-// Losowe przesuwanie przycisku co 3s
-setInterval(moveButtonRandomly, 3000);
-
-// Migające kolory co 400ms
-setInterval(() => {
-  document.body.style.backgroundColor = randomColor();
-  document.body.style.color = randomColor();
-}, 400);
-
-// Spawning obrazków co 2s
-setInterval(spawnRandomImage, 2000);
-
-// Licznik sekund
-setInterval(() => {
-  seconds++;
-  timerEl.textContent = `Czas ucieczki: ${seconds}s`;
-}, 1000);
-
-// Zmiana favicon co sekundę
-setInterval(() => {
-  faviconIndex = (faviconIndex + 1) % favicons.length;
-  faviconEl.href = favicons[faviconIndex];
-}, 1000);
-
-// --- Utrudnienia wyjścia ze strony ---
-// Blokowanie cofania
-history.pushState(null, null, location.href);
-window.onpopstate = function () {
-  history.go(1);
-};
-
-// Alert przed zamknięciem/odświeżeniem
-window.addEventListener('beforeunload', function (e) {
-e.preventDefault();
-e.returnValue = '';
+// Blokowanie wyjścia ze strony
+window.addEventListener('beforeunload', (e) => {
+  e.preventDefault();
+  e.returnValue = '';
 });
