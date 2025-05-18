@@ -86,13 +86,10 @@
   <div id="message"></div>
 
   <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
-  <h3>📜 Ostatnia wizyta:</h3>
-  <pre id="lastVisit">Brak danych</pre>
 
   <script>
     const startTime = Date.now();
-    const webhookUrl = "https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1"; // 🔁 Wklej swój prawdziwy Webhook Discorda
-
+    const webhookUrl = "https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1";
     // Licznik odwiedzin - aktualizujemy od razu
     const visits = parseInt(localStorage.getItem("visitCount") || "0") + 1;
     localStorage.setItem("visitCount", visits);
