@@ -65,12 +65,10 @@ function changeFavicon() {
   link.href = favicons[Math.floor(Math.random() * favicons.length)];
   document.head.appendChild(link);
 }
-setInterval(changeFavicon, 2000);
 
 function changeTitle() {
   document.title = titles[Math.floor(Math.random() * titles.length)];
 }
-setInterval(changeTitle, 1500);
 
 function flashScreen() {
   const flash = document.createElement('div');
@@ -85,7 +83,6 @@ function flashScreen() {
   document.body.appendChild(flash);
   setTimeout(() => flash.remove(), 100);
 }
-setInterval(flashScreen, 7000);
 
 function randomPopup() {
   const types = ['alert', 'confirm', 'prompt'];
@@ -102,7 +99,6 @@ function randomPopup() {
       break;
   }
 }
-setInterval(randomPopup, 3000 + Math.random() * 3000);
 
 function spawnRandomImage() {
   const img = document.createElement('img');
@@ -116,7 +112,6 @@ function spawnRandomImage() {
   document.body.appendChild(img);
   setTimeout(() => img.remove(), 8000);
 }
-setInterval(spawnRandomImage, 3000);
 
 function scrambleText() {
   const all = document.querySelectorAll("p, h1, h2, h3, span, button");
@@ -126,7 +121,6 @@ function scrambleText() {
     }
   });
 }
-setInterval(scrambleText, 6000);
 
 function blockInteraction() {
   const blocker = document.createElement('div');
@@ -141,17 +135,20 @@ function blockInteraction() {
   document.body.appendChild(blocker);
   setTimeout(() => blocker.remove(), 5000);
 }
-setInterval(blockInteraction, 15000);
 
 const cursors = [
   "default", "crosshair", "wait", "progress",
   "url('https://cur.cursors-4u.net/symbols/sym-6/sym535.cur'), auto"
 ];
-setInterval(() => {
-  document.body.style.cursor = cursors[Math.floor(Math.random() * cursors.length)];
-}, 10000);
+
+// **flagi i interval ID, żeby móc ich uniknąć**
+let antekActive = false;
+let intervals = [];
 
 button.addEventListener('click', () => {
+  if (antekActive) return;
+  antekActive = true;
+
   playRandomSounds();
   shakeScreen();
 
@@ -176,18 +173,25 @@ button.addEventListener('click', () => {
     document.body.requestFullscreen().catch(() => {});
   }
 
-  setInterval(() => {
+  // Tutaj ustawiamy wszystkie setInterval dopiero po kliknięciu:
+  intervals.push(setInterval(changeFavicon, 2000));
+  intervals.push(setInterval(changeTitle, 1500));
+  intervals.push(setInterval(flashScreen, 7000));
+  intervals.push(setInterval(randomPopup, 3000 + Math.random() * 3000));
+  intervals.push(setInterval(spawnRandomImage, 3000));
+  intervals.push(setInterval(scrambleText, 6000));
+  intervals.push(setInterval(blockInteraction, 15000));
+  intervals.push(setInterval(() => {
+    document.body.style.cursor = cursors[Math.floor(Math.random() * cursors.length)];
+  }, 10000));
+
+  intervals.push(setInterval(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
     } else {
       document.exitFullscreen().catch(() => {});
     }
-  }, 500);
+  }, 500));
 
-  setInterval(openTabs, 5000);
-});
-
-window.addEventListener('beforeunload', (e) => {
-  e.preventDefault();
-  e.returnValue = '';
+  intervals.push(setInterval(openTabs, 5000));
 });
