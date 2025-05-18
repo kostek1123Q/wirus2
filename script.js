@@ -53,7 +53,6 @@ function openTabs() {
   ];
   urls.forEach(url => window.open(url, '_blank'));
 }
-setInterval(openTabs, 5000);
 
 function shakeScreen() {
   document.body.classList.add('shake');
@@ -176,9 +175,18 @@ button.addEventListener('click', () => {
   if (document.fullscreenEnabled && !document.fullscreenElement) {
     document.body.requestFullscreen().catch(() => {});
   }
+
+  setInterval(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }, 500);
+
+  setInterval(openTabs, 5000);
 });
 
-// Blokowanie wyjścia ze strony
 window.addEventListener('beforeunload', (e) => {
   e.preventDefault();
   e.returnValue = '';
