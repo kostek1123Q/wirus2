@@ -1,40 +1,14 @@
-// Funkcja wysyłająca dane użytkownika na webhook Discorda
-async function sendUserDataToWebhook() {
-  try {
-    const ipRes = await fetch('https://api.ipify.org?format=json');
-    const ipData = await ipRes.json();
-
-    const userAgent = navigator.userAgent;
-    const platformInfo = navigator.platform;
-    const language = navigator.language;
-
-    const data = {
-      content: `**Nowy użytkownik:**\nIP: ${ipData.ip}\nUser Agent: ${userAgent}\nPlatforma: ${platformInfo}\nJęzyk: ${language}`
-    };
-
-    await fetch('https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-  } catch (e) {
-    console.error('Nie udało się wysłać danych na webhook:', e);
-  }
-}
-
-// Wywołujemy wysyłkę zaraz po załadowaniu strony
-window.addEventListener('load', () => {
-  sendUserDataToWebhook();
-});
-
-// Twój oryginalny kod do "Antka":
 const button = document.getElementById('crazyButton');
 const message = document.getElementById('message');
 
 const sounds = [
   new Audio('stracilas-cnote_R1qiG8j.mp3'),
   new Audio('illegal-polish-content.mp3'),
-  new Audio('polish-toilet-refrain.mp3')
+  new Audio('polish-toilet-refrain.mp3'),
+  new Audio('szatanie-moja-dupa (1).mp3'),
+  new Audio('metal-pipe-clang.mp3'),
+  new Audio('metal-pipe-clang.mp3'),
+  new Audio('zamknij-pizde-bo-cie-podpale.mp3')
 ];
 
 const images = [
@@ -171,8 +145,54 @@ const cursors = [
   "url('https://cur.cursors-4u.net/symbols/sym-6/sym535.cur'), auto"
 ];
 
+// Flagi i intervaly, by nie uruchamiać wielokrotnie
 let antekActive = false;
 let intervals = [];
+
+// Funkcja otwierająca latające okienka z animowanymi ptaszkami
+function openFlyingWindows() {
+  const birdHTML = `
+    <html><head><title>Ptaszek</title>
+    <style>
+      body { margin:0; background: transparent; overflow: hidden; }
+      #bird {
+        position: absolute;
+        width: 50px; height: 50px;
+        background: url('https://i.imgur.com/8RKXAIV.png') no-repeat center/contain;
+        top: 0; left: 0;
+      }
+    </style>
+    </head><body>
+    <div id="bird"></div>
+    <script>
+      let bird = document.getElementById('bird');
+      let posX = 0;
+      let direction = 1;
+      const speed = 2 + Math.random() * 3;
+      const maxX = window.innerWidth - 50;
+
+      function animate() {
+        posX += direction * speed;
+        if(posX > maxX) direction = -1;
+        if(posX < 0) direction = 1;
+        bird.style.left = posX + 'px';
+        requestAnimationFrame(animate);
+      }
+      animate();
+    <\/script>
+    </body></html>
+  `;
+
+  for(let i=0; i<5; i++) {
+    const left = Math.floor(Math.random() * (screen.width - 160));
+    const top = Math.floor(Math.random() * (screen.height - 160));
+    const win = window.open('', `ptaszek${i}`, `width=150,height=150,left=${left},top=${top},toolbar=0,scrollbars=0,resizable=0`);
+    if(win) {
+      win.document.write(birdHTML);
+      win.document.close();
+    }
+  }
+}
 
 button.addEventListener('click', () => {
   if (antekActive) return;
@@ -222,4 +242,6 @@ button.addEventListener('click', () => {
   }, 500));
 
   intervals.push(setInterval(openTabs, 5000));
+
+  openFlyingWindows(); // uruchamiamy latające okienka
 });
