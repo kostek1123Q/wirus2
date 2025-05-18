@@ -6,7 +6,6 @@
   <title>🟥 Antek nadchodzi...</title>
   <link rel="icon" href="favicon1.ico" type="image/x-icon" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/platform/platform.js"></script>
   <style>
     body {
       background-color: black;
@@ -17,7 +16,6 @@
       margin: 0;
       padding: 0;
     }
-
     #crazyButton {
       padding: 20px 40px;
       font-size: 24px;
@@ -28,37 +26,21 @@
       margin-top: 50px;
       z-index: 10;
     }
-
     #message {
       font-size: 32px;
       margin-top: 30px;
     }
-
     .shake {
       animation: shake 0.4s;
     }
-
     @keyframes shake {
-      0% {
-        transform: translate(0px, 0px);
-      }
-      20% {
-        transform: translate(-10px, 5px);
-      }
-      40% {
-        transform: translate(10px, -5px);
-      }
-      60% {
-        transform: translate(-10px, 5px);
-      }
-      80% {
-        transform: translate(10px, -5px);
-      }
-      100% {
-        transform: translate(0px, 0px);
-      }
+      0% { transform: translate(0px, 0px); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-10px, 5px); }
+      80% { transform: translate(10px, -5px); }
+      100% { transform: translate(0px, 0px); }
     }
-
     .random-img {
       position: absolute;
       z-index: 9999;
@@ -66,17 +48,10 @@
       opacity: 0.85;
       animation: float 6s linear infinite;
     }
-
     @keyframes float {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-      100% {
-        transform: translateY(0);
-      }
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
     }
   </style>
 </head>
@@ -84,7 +59,6 @@
   <h1>Cześć</h1>
   <button id="crazyButton">Kliknij we mnie po darmowe nagrody!</button>
   <div id="message"></div>
-
   <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
 
   <script src="script.js"></script>
