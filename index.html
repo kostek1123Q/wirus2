@@ -1,91 +1,76 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-  <title>antek</title>
-  <meta charset='UTF-8'>
-    <style>
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'avenir next', avenir,
-        'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
-        sans-serif;
-      overflow: hidden;
-    }
-    .hello-message {
-      margin: 40px;
-      text-align: center;
-    }
-    .logout-messages {
-      pointer-events: none;
-      color: red;
-      margin: 40px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      text-shadow: 2px 2px #FFF, 4px 4px 10px #000;
-    }
-    img {
-      width: 300px;
-    }
-    @keyframes blurslowly {
-      0% {
-        filter: none;
-      }
-      92% {
-        filter: blur(0);
-      }
-      96% {
-        filter: blur(1px);
-      }
-      100% {
-        filter: blur(0);
-      }
-    }
-    body {
-      animation-name: blurslowly;
-      animation-iteration-count: infinite;
-      animation-duration: 15s;
-      animation-play-state: running;
-    }
-  </style>
-  <link rel="icon" type="image/x-icon" href="media/images/ptok.jpg">
-
-  <meta property="og:title" content="Antek" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://antek.com.pl" />
-  <meta property="og:image" content="https://ptoszek.pl/media/images/ptok.jpg" />
-  <meta property="og:description" content="Lista wszystkich osób z imieniem Antek!" />
-  <meta name="keywords" content="antek, antek.pl, antos.pl, antek.com.pl, antos.com.pl">
-  <meta name="description" content="Obejrzyj zdjęcia Ptaków za frytę!">
-  <meta name="theme-color" content="#34eb7d">
-</head>
-<body>
-
-<noscript>Po coś tego JavaScript wyłączył bamboszu!</noscript>
-<template>
-  <div class='hello-message'>
-    <h1>Sieeeeema!</h1>
-    <h2>We no walnij 3 razy w spacje.</h2>
-    <h3>(albo kliknij w obrazek)</h3>
-
-    <img src='media/images/intro.gif' alt='Cute ptok' />
-  </div>
-  <div class='logout-messages'></div>
-</template>
-
-<script src='index.js'></script>
-
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6S5388LRGM"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7D95B137HB"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-6S5388LRGM');
+  gtag('config', 'G-7D95B137HB');
 </script>
 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🟥 Antek nadchodzi...</title>
+  <link rel="icon" href="favicon1.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    #crazyButton {
+      padding: 20px 40px;
+      font-size: 24px;
+      background-color: red;
+      border: none;
+      color: white;
+      cursor: pointer;
+      margin-top: 50px;
+      z-index: 10;
+    }
+    #message {
+      font-size: 32px;
+      margin-top: 30px;
+    }
+    .shake {
+      animation: shake 0.4s;
+    }
+    @keyframes shake {
+      0% { transform: translate(0px, 0px); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-10px, 5px); }
+      80% { transform: translate(10px, -5px); }
+      100% { transform: translate(0px, 0px); }
+    }
+    .random-img {
+      position: absolute;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.85;
+      animation: float 6s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Cześć</h1>
+  <button id="crazyButton">Kliknij we mnie po darmowe nagrody!</button>
+  <div id="message"></div>
+  <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
+
+  <script src="script.js"></script>
 </body>
 </html>
