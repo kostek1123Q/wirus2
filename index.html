@@ -1,76 +1,155 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7D95B137HB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7D95B137HB');
-</script>
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🟥 Antek nadchodzi...</title>
-  <link rel="icon" href="favicon1.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antek - tester linków</title>
   <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: 'Courier New', monospace;
-      text-align: center;
-      overflow: hidden;
+    html, body {
       margin: 0;
       padding: 0;
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      overflow: hidden;
+      text-align: center;
+      height: 100vh;
     }
-    #crazyButton {
-      padding: 20px 40px;
-      font-size: 24px;
-      background-color: red;
-      border: none;
-      color: white;
+    h1 {
+      font-size: 6vw;
+      margin: 20px 10px;
+    }
+    input, button {
+      font-size: 4vw;
+      padding: 12px;
+      margin: 10px auto;
+      display: block;
+      width: 80%;
+      max-width: 400px;
+      border: 2px solid lime;
+      background: black;
+      color: lime;
+      text-align: center;
+      border-radius: 8px;
+    }
+    button:hover {
+      background-color: lime;
+      color: black;
       cursor: pointer;
-      margin-top: 50px;
-      z-index: 10;
     }
-    #message {
-      font-size: 32px;
-      margin-top: 30px;
-    }
-    .shake {
-      animation: shake 0.4s;
-    }
-    @keyframes shake {
-      0% { transform: translate(0px, 0px); }
-      20% { transform: translate(-10px, 5px); }
-      40% { transform: translate(10px, -5px); }
-      60% { transform: translate(-10px, 5px); }
-      80% { transform: translate(10px, -5px); }
-      100% { transform: translate(0px, 0px); }
-    }
-    .random-img {
+    .flying {
       position: absolute;
-      z-index: 9999;
+      width: 80px;
+      animation: fly 6s linear infinite;
+      z-index: 999;
       pointer-events: none;
-      opacity: 0.85;
-      animation: float 6s linear infinite;
     }
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
+    @keyframes fly {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        left: 0;
+      }
+      100% {
+        transform: translateY(-150vh) rotate(1080deg);
+        left: 100vw;
+      }
+    }
+    #counter {
+      margin-top: 20px;
+      font-size: 4vw;
+    }
+    @media (min-width: 768px) {
+      h1 { font-size: 3rem; }
+      input, button { font-size: 1.2rem; }
+      #counter { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
-  <h1>Cześć</h1>
-  <button id="crazyButton">Kliknij we mnie po darmowe nagrody!</button>
-  <div id="message"></div>
-  <p>🔁 Odwiedziłeś tę stronę <strong id="visitCount">...</strong> razy.</p>
+  <h1>🔍 Antek - tester linków</h1>
+  <input type="text" id="linkInput" placeholder="Wklej link..." />
+  <button onclick="startChaos()">Przetestuj link</button>
+  <div id="counter"></div>
 
-  <script src="script.js"></script>
+  <audio id="audio" src="https://www.myinstants.com/media/sounds/troll-song.mp3" preload="auto"></audio>
+
+  <script>
+    // Licznik wejść (localStorage)
+    const counterKey = "visits";
+    const counterEl = document.getElementById("counter");
+    let visits = localStorage.getItem(counterKey);
+    visits = visits ? parseInt(visits) + 1 : 1;
+    localStorage.setItem(counterKey, visits);
+    counterEl.textContent = `👁️ Wejścia na stronę: ${visits}`;
+
+    // Obrazki z neta (bez potrzeby hostowania)
+    const imageUrls = [
+      "https://i.imgur.com/0rZbZBn.png", // ptoszek
+      "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
+      "https://i.imgur.com/v4jvG5D.gif",
+      "https://i.imgur.com/8fFM4QI.gif"
+    ];
+
+    function createFlyingImage() {
+      const img = document.createElement("img");
+      img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+      img.className = "flying";
+      img.style.top = `${Math.random() * window.innerHeight}px`;
+      img.style.left = `${Math.random() * window.innerWidth}px`;
+      document.body.appendChild(img);
+      setTimeout(() => img.remove(), 8000);
+    }
+
+    function flashBackground() {
+      const colors = ["black", "red", "blue", "lime", "magenta", "yellow"];
+      let i = 0;
+      const interval = setInterval(() => {
+        document.body.style.backgroundColor = colors[i % colors.length];
+        i++;
+        if (i > 25) {
+          clearInterval(interval);
+          document.body.style.backgroundColor = "black";
+        }
+      }, 120);
+    }
+
+    // Otwiera 20 losowych stron co 3 sekundy
+    function showPopups() {
+      const sites = [
+        "https://en.wikipedia.org/wiki/Special:Random",
+        "https://unsplash.com/random",
+        "https://picsum.photos/200",
+        "https://placekitten.com/200/300",
+        "https://www.reddit.com/r/random",
+        "https://www.boredpanda.com/",
+        "https://www.theuselessweb.com/",
+        "https://thispersondoesnotexist.com/",
+        "https://randomwordgenerator.com/",
+        "https://www.funnyjunk.com/"
+      ];
+
+      let count = 0;
+      const interval = setInterval(() => {
+        if (count >= 20) {
+          clearInterval(interval);
+          return;
+        }
+        const site = sites[Math.floor(Math.random() * sites.length)];
+        const randParam = Math.floor(Math.random() * 100000);
+        window.open(`${site}?img=${randParam}`, "_blank");
+        count++;
+      }, 3000);
+    }
+
+    function startChaos() {
+      alert("Trwa analiza... 🔍");
+      document.getElementById("audio").play();
+      flashBackground();
+      showPopups();
+      for (let i = 0; i < 15; i++) {
+        setTimeout(createFlyingImage, i * 250);
+      }
+    }
+  </script>
 </body>
 </html>
